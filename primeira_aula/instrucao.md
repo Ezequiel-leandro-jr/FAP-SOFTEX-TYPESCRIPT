@@ -1,4 +1,4 @@
-1. Começa um novo projeto com npm init -y e instala o typescript pelo node: npm install -g typescript
+1. Começa um novo projeto com npm init -y e instala o typescript pelo node: npm install -g typescript . Cria um .gitgnore com 'node_modules' para não subir pro remoto.
 2. você digita tsc -v  para saber a versão do typescript
 3. você cria um arquivo .ts com o mesmo nome do arquivo main padrão presente no JSON
 4. Escreve um "olá, mundo" 
