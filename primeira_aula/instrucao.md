@@ -8,5 +8,9 @@
 8. no JSON, coloque, abaixo do "test": "start": "ts-node main.ts"
 9. Aí nem precisa compilar sempre para .js, apenas digitar npm start
 10. Se você não for rodar o main, utilize ts-node nomeDoArquivo.ts
+11. Para trabalhar com funções, digite tsc --init no terminal
+12. Aí na linha 85 do arquivo tsconfig.json, você troca "true" por "false"
+
+
 
 
