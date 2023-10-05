@@ -11,6 +11,9 @@
 11. Para trabalhar com funções, digite tsc --init no terminal
 12. Aí na linha 85 do arquivo tsconfig.json, você troca "true" por "false"
 
+PS. Pra rodar com ts-node, comece com npx = npx ts-node endereçoDoArquivo.ts
+
+
 
 
 
