@@ -1,96 +1,119 @@
 /**
- * The Creator class declares the factory method that is supposed to return an
- * object of a Product class. The Creator's subclasses usually provide the
- * implementation of this method.
-/** 
- * criação da interface
-*/
-abstract class Creator {
-    /**
-     * Note that the Creator may also provide some default implementation of the
-     * factory method.
-     */
-    public abstract factoryMethod(): Product;
+ * Considere que:
+ * os produtos devem implementar uma interface comum
+ * o cliente deve utilizar apenas a fábrica para criar instâncias do tipo abstrato de interface
+ * todo computador deve ter, com getters, os atributos: ram, hd, cpu e type
+ * há dois tipos de computadores: pc e server
+ * RAM e HD devem estar em GB
+ * CPU deve estar em GHz
+ * através do tipo informado, a fábrica decide qual tipo de computador irá instanciar
+ * quando o método .toString() for aplicado a um computador, ele deve imprimir seus atributos 
+ */
 
-    /**
-     * Also note that, despite its name, the Creator's primary responsibility is
-     * not creating products. Usually, it contains some core business logic that
-     * relies on Product objects, returned by the factory method. Subclasses can
-     * indirectly change that business logic by overriding the factory method
-     * and returning a different type of product from it.
-     */
-    public someOperation(): string {
-        // Call the factory method to create a Product object.
-        const product = this.factoryMethod();
-        // Now, use the product.
-        return `Creator: The same creator's code has just worked with ${product.operation()}`;
+//habilitação do readline-sync
+import readline from 'readline-sync';
+
+
+//interface comum para implementação dos atributos dos produtos
+interface Computador {
+    //atributos
+    ram: string;
+    hd: string;
+    cpu: string;
+    tipo: string;
+}
+
+//classes concretas dos produtos
+class PC implements Computador {
+    private _ram: number = 16;
+    private _hd: number = 256;
+    private _cpu: number = 2.8;
+    private _tipo: string = 'PC';
+
+    //getters
+    get ram(): string {
+        return `${this._ram}GB`;
+    }
+
+    get hd(): string {
+        return `${this._hd}GB`;
+    }
+
+    get cpu(): string {
+        return `${this._cpu}GHz`;
+    }
+
+    get tipo(): string {
+        return `${this._tipo}`;
     }
 }
 
-/**
- * Concrete Creators override the factory method in order to change the
- * resulting product's type.
- */
-class ConcreteCreator1 extends Creator {
-    /**
-     * Note that the signature of the method still uses the abstract product
-     * type, even though the concrete product is actually returned from the
-     * method. This way the Creator can stay independent of concrete product
-     * classes.
-     */
-    public factoryMethod(): Product {
-        return new ConcreteProduct1();
+class Server implements Computador {
+    private _ram: number = 32;
+    private _hd: number = 500;
+    private _cpu: number = 5;
+    private _tipo: string = 'Server';
+
+    //getters
+    get ram(): string {
+        return `${this._ram}GB`;
+    }
+
+    get hd(): string {
+        return `${this._hd}GB`;
+    }
+
+    get cpu(): string {
+        return `${this._cpu}GHz`;
+    }
+
+    get tipo(): string {
+        return `${this._tipo}`;
     }
 }
 
-class ConcreteCreator2 extends Creator {
-    public factoryMethod(): Product {
-        return new ConcreteProduct2();
+//interface da fábrica de computadores
+interface fabricaAbstrata {
+    //método para criação de computadores
+    criarComputador(tipo: number): Computador;
+    }
+
+//classes concretas para fabricar PC e Server
+class fabricaConcreta implements fabricaAbstrata {
+    criarComputador(tipo: number): Computador | null {
+        switch(tipo) {
+            case 1:
+                return new PC();
+                break;
+            case 2:
+                return new Server();
+                break;
+            default:
+                console.log('\nTipo de computador invalido!');
+                return null;
+                break;
+        }
     }
 }
 
-/**
- * The Product interface declares the operations that all concrete products must
- * implement.
- */
-interface Product {
-    operation(): string;
+//utilização da fábrica
+console.log('\n\tFABRICA DE COMPUTADORES\n');
+
+let tipo: number = readline.questionInt('Digite o numero do tipo de Computador a ser fabricado:\n1. PC\n2. Server\n=> ');
+
+const fabrica = new fabricaConcreta();
+
+const computador = fabrica.criarComputador(tipo);
+
+if(computador == null) {
+    console.log('');
+} else {
+    console.log('\n\tComputador fabricado com sucesso:');
+    console.log(`-------------------------
+TIPO: ${computador.tipo}
+RAM:  ${computador.ram}
+CPU:  ${computador.cpu}
+HD:   ${computador.hd}
+-------------------------`);
 }
 
-/**
- * Concrete Products provide various implementations of the Product interface.
- */
-class ConcreteProduct1 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct1}';
-    }
-}
-
-class ConcreteProduct2 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct2}';
-    }
-}
-
-/**
- * The client code works with an instance of a concrete creator, albeit through
- * its base interface. As long as the client keeps working with the creator via
- * the base interface, you can pass it any creator's subclass.
- */
-function clientCode(creator: Creator) {
-    // ...
-    console.log('Client: I\'m not aware of the creator\'s class, but it still works.');
-    console.log(creator.someOperation());
-    // ...
-}
-
-/**
- * The Application picks a creator's type depending on the configuration or
- * environment.
- */
-console.log('App: Launched with the ConcreteCreator1.');
-clientCode(new ConcreteCreator1());
-console.log('');
-
-console.log('App: Launched with the ConcreteCreator2.');
-clientCode(new ConcreteCreator2());
