@@ -12,7 +12,7 @@ interface Sanduiche {
   
   // classe concreta SanduicheDecorator implementando a interface Sanduiche
   class SanduicheDecorator implements Sanduiche {
-    protected sanduiche: Sanduiche;
+    sanduiche: Sanduiche;
   
     constructor(sanduiche: Sanduiche) {
       this.sanduiche = sanduiche;
